@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "safe-walk",
+	"version": "${version}",
+	"name": "Safe Walk",
+	"description": "A simple cool mod that makes you crouch whenever you on the edge of a block",
+	"authors": [
+		"I-No-oNe"
+	],
+	"contact": {
+		"homepage": "https://i-no-one.github.io/",
+		"sources": "https://github.com/I-No-oNe/safe-walk"
+	},
+	"license": "MIT",
+	"icon": "assets/safe-walk/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [],
+		"client": [
+			"net.i_no_am.sw.SafeWalk"
+		]
+	},
+	"mixins": [
+		"safe-walk.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": ">=1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
