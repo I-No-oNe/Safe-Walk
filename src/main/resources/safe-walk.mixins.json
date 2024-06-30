@@ -1,12 +1,13 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "net.i_no_am.sw.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
-  "injectors": {
-    "defaultRequire": 1
-  },
   "client": [
     "MixinKeyBinding"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

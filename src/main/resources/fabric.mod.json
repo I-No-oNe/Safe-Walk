@@ -15,7 +15,9 @@
 	"icon": "assets/safe-walk/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [],
+		"main": [
+			"net.i_no_am.sw.client.SafeWalkClient"
+		],
 		"client": [
 			"net.i_no_am.sw.SafeWalk"
 		]
