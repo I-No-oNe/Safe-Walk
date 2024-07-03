@@ -1,29 +1,38 @@
 package net.i_no_am.sw;
 
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.i_no_am.sw.client.Global;
+import net.i_no_am.sw.command.ModCommand;
+import net.i_no_am.sw.config.SafeWalkConfig;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import org.lwjgl.glfw.GLFW;
 
-public class SafeWalk implements ClientModInitializer {
+public class SafeWalk implements ClientModInitializer, Global {
+		/*Toggle Mod Key*/
+	KeyBinding BIND = new KeyBinding("key.safe_walk_toggle.mod", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C, "key.categories.safewalk");
+		/*BedWars Mode Key*/
+	KeyBinding BW = new KeyBinding("key.safe_walk_toggle.bw", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, "key.categories.safewalk");
+/*------------------------------------------------------------------------------------*/
 	@Override
 	public void onInitializeClient() {
-		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("safe-walk")
-                .then(ClientCommandManager.argument("enabled", BoolArgumentType.bool())
-                        .executes(SafeWalk::executeToggleCommand))));
-	}
-
-	private static int executeToggleCommand(CommandContext<FabricClientCommandSource> context) {
-		boolean enabled = BoolArgumentType.getBool(context, "enabled");
-		if (enabled) {
-			SafeWalkConfig.toggleSafeWalk();
-			MinecraftClient.getInstance().player.sendMessage(Text.literal(("§6SafeWalk§r is now " + (SafeWalkConfig.isSafeWalkEnabled() ? "§2enabled" : "§4disabled"))));
-		}
-		return 1;
+		/*Registering Keys*/
+		KeyBindingHelper.registerKeyBinding(BIND);
+		KeyBindingHelper.registerKeyBinding(BW);
+		/*Registering Commands*/
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ModCommand.registerCommands()));
+		/*Registering Config*/
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			SafeWalkConfig.loadConfig();
+			if (BIND.wasPressed()) {
+				SafeWalkConfig.toggleMod();
+			}
+			if (BW.wasPressed()) {
+				SafeWalkConfig.toggleBedWars();
+			}
+		});
 	}
 }
