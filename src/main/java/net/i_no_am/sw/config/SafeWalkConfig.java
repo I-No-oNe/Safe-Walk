@@ -47,31 +47,48 @@ public class SafeWalkConfig implements Global {
     }
 
     public static boolean isEnabled() {
+        if (INSTANCE == null) {
+            loadConfig();
+        }
         return INSTANCE.isEnabled;
     }
 
-
     public static boolean isBedWars() {
+        if (INSTANCE == null) {
+            loadConfig();
+        }
         return INSTANCE.bedWarsMode;
     }
 
     public static void setEnabled(boolean enabled) {
+        if (INSTANCE == null) {
+            loadConfig();
+        }
         INSTANCE.isEnabled = enabled;
         saveConfig();
     }
 
     public static void setBedWarsEnabled(boolean enabled) {
+        if (INSTANCE == null) {
+            loadConfig();
+        }
         INSTANCE.bedWarsMode = enabled;
         saveConfig();
     }
 
     public static void toggleMod() {
+        if (INSTANCE == null) {
+            loadConfig();
+        }
         boolean enabled = !SafeWalkConfig.isEnabled();
         SafeWalkConfig.setEnabled(enabled);
         mc.player.sendMessage(Text.literal("§6SafeWalk§r is now " + (enabled ? "§2enabled" : "§4disabled")));
     }
 
     public static void toggleBedWars() {
+        if (INSTANCE == null) {
+            loadConfig();
+        }
         boolean enabled = !SafeWalkConfig.isBedWars();
         SafeWalkConfig.setBedWarsEnabled(enabled);
         mc.player.sendMessage(Text.literal("§6Bed Wars Mode§r is now " + (enabled ? "§2enabled" : "§4disabled")));
